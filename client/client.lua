@@ -503,6 +503,17 @@ CreateThread(function()
                 end
             end
 
+            if Config.RestoreHealth then
+                local health = GetEntityHealth(cache.ped)
+                local maxHealth = Citizen.InvokeNative(0x4700A416E8324EF3, cache.ped, Citizen.ResultAsInteger())
+                if maxHealth <= 0 then maxHealth = 600 end
+                if health < maxHealth and (state.hunger or 0) > 0 and (state.thirst or 0) > 0 then
+                    SetEntityHealth(cache.ped, math.min(maxHealth, health + Config.HealthRestoreRate))
+                    updateNeed('hunger', Config.HealingHungerRate, true)
+                    updateNeed('thirst', Config.HealingThirstRate, true)
+                end
+            end
+
             updateNeed('hunger', Config.HungerRate, true)
             updateNeed('thirst', Config.ThirstRate, true)
             updateNeed('cleanliness', Config.CleanlinessRate, true)
