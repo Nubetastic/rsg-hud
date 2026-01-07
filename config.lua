@@ -4,9 +4,13 @@ Config = {}
 -- needs settings
 ----------------------------------
 Config.StatusInterval = 5000 -- how often to update hunger/thirst status in milliseconds
-Config.HungerRate = 0.01 -- Rate at which hunger goes down.
-Config.ThirstRate = 0.01 -- Rate at which thirst goes down.
+Config.HungerRate = 0.05 -- Rate at which hunger goes down.
+Config.ThirstRate = 0.05 -- Rate at which thirst goes down.
 Config.CleanlinessRate = 0.01 -- Rate at which cleanliness goes down.
+Config.RestoreHealth = true
+Config.HealthRestoreRate = 5 -- Rate at which health restores when not hungry/thirsty.
+Config.HealingHungerRate = 0.83 -- Added Hunger rate while healing.
+Config.HealingThirstRate = 0.83 -- Added Thirst rate while healing.
 
 ----------------------------------
 -- stress settings
@@ -33,12 +37,12 @@ Config.HideHorseCourageNative = true
 ----------------------------------
 -- voice icon settings
 ----------------------------------
-Config.VoiceAlwaysVisible = true  -- true = always visible, false = only when talking
+Config.VoiceAlwaysVisible = false  -- true = always visible, false = only when talking
 
 ----------------------------------
 -- minimap / compass settings
 ----------------------------------
-Config.OnFootMinimap = false -- set to true/false to disable/enable minimap when on foot
+Config.OnFootMinimap = true -- set to true/false to disable/enable minimap when on foot
 Config.OnFootCompass = false -- true = have the minimap set to a compass instead of off or normal minimap
 Config.MountMinimap = true  -- set to false if you want to disable the minimap when on mount
 Config.MountCompass  = false -- set to true if you want to have a compass instead of normal minimap while on a mount
@@ -51,7 +55,7 @@ Config.DoHealthDamage = true
 ----------------------------------
 -- turn screen effect on/off
 ----------------------------------
-Config.DoHealthDamageFx = false
+Config.DoHealthDamageFx = true
 
 ----------------------------------
 -- turn health damage sound on/off
@@ -61,28 +65,28 @@ Config.DoHealthPainSound = true
 ----------------------------------
 -- temp settings (only one setting)
 ----------------------------------
-Config.TempFormat = 'celsius'
+Config.TempFormat = 'fahrenheit'
 --Config.TempFormat = 'fahrenheit'
 
 ----------------------------------
 -- temp feature (does damage to player if too hot or cold)
 ----------------------------------
-Config.TempFeature = false
+Config.TempFeature = true
 
 ----------------------------------
 -- warmth add while wearing (temp feature must be enabled)
 ----------------------------------
-Config.WearingHat      = 0
-Config.WearingShirt    = 0
-Config.WearingPants    = 0
-Config.WearingBoots    = 0
+Config.WearingHat      = 5
+Config.WearingShirt    = 1
+Config.WearingPants    = 2
+Config.WearingBoots    = 3
 Config.WearingCoat     = 15
 Config.WearingOpenCoat = 15
-Config.WearingGloves   = 0
-Config.WearingVest     = 0
-Config.WearingPoncho   = 0
-Config.WearingSkirt    = 0
-Config.WearingChaps    = 0
+Config.WearingGloves   = 2
+Config.WearingVest     = 1
+Config.WearingPoncho   = 3
+Config.WearingSkirt    = 2
+Config.WearingChaps    = 2
 
 ----------------------------------
 -- job type warmth exemptions (temp feature must be enabled)
@@ -98,14 +102,14 @@ Config.NoWarmthJobs = {
 ----------------------------------
 -- warmth limit before impacts health  (temp feature must be enabled)
 ----------------------------------
-Config.MinTemp = -5
-Config.MaxTemp = 40
+Config.MinTemp = 23
+Config.MaxTemp = 104
 
 ----------------------------------
 -- cleanliness limit before impacts health
 ----------------------------------
 Config.FlyEffect = true -- toggle flies on/off
-Config.MinCleanliness = 30
+Config.MinCleanliness = 10
 
 ----------------------------------
 -- amount of health to remove if min/max temp reached
