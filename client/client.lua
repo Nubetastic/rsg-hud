@@ -1,5 +1,4 @@
 local RSGCore = exports['rsg-core']:GetCoreObject()
-
 local speed = 0.0
 local cashAmount = 0
 local bloodmoneyAmount = 0
@@ -156,16 +155,16 @@ local FliesSpawn = function (clean)
     local current_ptfx_dictionary = new_ptfx_dictionary
     local current_ptfx_name = new_ptfx_name
     local bone_index = IsPedMale() and 413 or 464   -- ["CP_Chest"]  = {bone_index = 464, bone_id = 53684},
-     local ptfx_offcet_x = 0.2
-     local ptfx_offcet_y = 0.0
-     local ptfx_offcet_z = -0.4
-     local ptfx_rot_x = 0.0
-     local ptfx_rot_y = 0.0
-     local ptfx_rot_z = 0.0
-     local ptfx_scale = 1.0
-     local ptfx_axis_x = 0
-     local ptfx_axis_y = 0
-     local ptfx_axis_z = 0
+    local ptfx_offcet_x = 0.2
+    local ptfx_offcet_y = 0.0
+    local ptfx_offcet_z = -0.4
+    local ptfx_rot_x = 0.0
+    local ptfx_rot_y = 0.0
+    local ptfx_rot_z = 0.0
+    local ptfx_scale = 1.0
+    local ptfx_axis_x = 0
+    local ptfx_axis_y = 0
+    local ptfx_axis_z = 0
 
     if LocalPlayer.state.isBathingActive then
         if is_particle_effect_active then
@@ -251,7 +250,7 @@ CreateThread(function()
     while true do
         Wait(30000)
         RSGCore.Functions.TriggerCallback('hud:server:getoutlawstatus', function(result)
-            outlawstatus = result[1].outlawstatus
+            outlawstatus = result
         end)
     end
 end)
@@ -320,7 +319,7 @@ CreateThread(function()
                 horseclean = horseclean,
                 voice = voice,
                 voiceAlwaysVisible = Config.VoiceAlwaysVisible,
-                 youhavemail = (LocalPlayer.state.telegramUnreadMessages or 0) > 0,
+                youhavemail = (LocalPlayer.state.telegramUnreadMessages or 0) > 0,
                 outlawstatus = outlawstatus,
                 iconColors = Config.IconColors, -- Send config colors
             })
@@ -380,10 +379,8 @@ end)
 CreateThread(function()
     while true do
         Wait(1000)
-
-        local coords = GetEntityCoords(cache.ped)
-
         if Config.TempFeature then
+            local coords = GetEntityCoords(cache.ped)
             -- wearing
             local hat      = Citizen.InvokeNative(0xFB4891BD7578CDC1, cache.ped, 0x9925C067) -- hat
             local shirt    = Citizen.InvokeNative(0xFB4891BD7578CDC1, cache.ped, 0x2026C46D) -- shirt
@@ -443,7 +440,6 @@ CreateThread(function()
                 temp = math.floor(GetTemperatureAtCoords(coords) * 9/5 + 32)
             end
         end
-
     end
 end)
 
@@ -466,6 +462,8 @@ CreateThread(function()
 
         if LocalPlayer.state.isLoggedIn and not playerData.metadata['isdead'] then
             local state = LocalPlayer.state
+            local hungerDrain = Config.HungerRate
+            local thirstDrain = Config.ThirstRate
 
             if Config.FlyEffect then
                 FliesSpawn(state.cleanliness)
@@ -473,12 +471,21 @@ CreateThread(function()
 
             if Config.DoHealthDamage then
                 local health = GetEntityHealth(cache.ped)
+                local maxHealth = GetEntityMaxHealth(cache.ped)
 
                 -- hunger/thirst damage
                 if (state.hunger <= 0 or state.thirst <= 0) then
                     local decreaseThreshold = math.random(5, 10)
                     PlayPain(cache.ped, 9, 1, true, true)
                     SetEntityHealth(cache.ped, math.max(0, health - decreaseThreshold))
+                end
+
+                -- health recovery while not starving or dehydrated
+                if health < maxHealth and state.hunger > 0 and state.thirst > 0 then
+                    health = math.min(maxHealth, health + Config.HealthRestoreRate)
+                    SetEntityHealth(cache.ped, health)
+                    hungerDrain = hungerDrain + Config.HealingHungerRate
+                    thirstDrain = thirstDrain + Config.HealingThirstRate
                 end
 
                 if Config.TempFeature then
@@ -523,21 +530,8 @@ CreateThread(function()
                 end
             end
 
-            if Config.RestoreHealth then
-                local health = GetEntityHealth(cache.ped)
-                local maxHealth = Citizen.InvokeNative(0x4700A416E8324EF3, cache.ped, Citizen.ResultAsInteger())
-                if maxHealth <= 0 then maxHealth = 600 end
-                local canRestoreTemp = not Config.TempFeature or (temp >= Config.MinTemp and temp <= Config.MaxTemp)
-                if canRestoreTemp and health < maxHealth and (state.hunger or 0) > 0 and (state.thirst or 0) > 0 then
-                    SetEntityHealth(cache.ped, math.min(maxHealth, health + Config.HealthRestoreRate))
-                    updateNeed('hunger', Config.HealingHungerRate, true)
-                    updateNeed('thirst', Config.HealingThirstRate, true)
-                end
-            end
-
-            updateNeed('hunger', Config.HungerRate, true)
-            updateNeed('thirst', Config.ThirstRate, true)
-            updateNeed('cleanliness', Config.CleanlinessRate, true)
+            updateNeed('hunger', hungerDrain, true)
+            updateNeed('thirst', thirstDrain, true)
             updateNeed('stress', Config.StressDecayRate, true)
         end
     end
@@ -589,11 +583,9 @@ end)
 ------------------------------------------------
 RegisterNetEvent('hud:client:OnMoneyChange', function(type, amount, isMinus)
     RSGCore.Functions.GetPlayerData(function(PlayerData)
-        if PlayerData and PlayerData.money then
-            cashAmount = PlayerData.money.cash
-            bloodmoneyAmount = PlayerData.money.bloodmoney
-            bankAmount = PlayerData.money.bank
-        end
+        cashAmount = PlayerData.money.cash
+        bloodmoneyAmount = PlayerData.money.bloodmoney
+        bankAmount = PlayerData.money.bank
     end)
     SendNUIMessage({
         action = 'update',

@@ -1,14 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');@import url('https://fonts.cdnfonts.com/css/pricedown');@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Yantramanav:wght@100;300;400;500;700;900&display=swap');@import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Yantramanav:wght@100;300;400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Yantramanav:wght@100;300;400;500;700;900&display=swap');
+@import url('https://fonts.cdnfonts.com/css/pricedown');
 @import url('https://fonts.cdnfonts.com/css/chinese-rocks');
 
 #main-container {
     width: 100%;
     height: auto;
-}
-
-:root {
-    --nui-scale: 1.0;
 }
 
 /* Prevent scrollbars and ensure proper viewport */
@@ -19,7 +17,6 @@ body, html {
     width: 100vw;
     height: 100vh;
     box-sizing: border-box;
-    font-size: calc(1vh * var(--nui-scale));
 }
 
 * {
@@ -33,7 +30,7 @@ body, html {
     right: 2vw;
     top: 5vh;
     font-weight: 400;
-    font-size: 2.78rem;
+    font-size: 30px;
   }
   
   #sign {
@@ -51,7 +48,7 @@ body, html {
   }
   
   #plus {
-    font-size: 4.63rem;
+    font-size: 50px;
     font-family: 'Chinese Rocks Rg', sans-serif;
     text-align: right;
     color: #ac98009a;
@@ -59,7 +56,7 @@ body, html {
   }
   
   #minus {
-    font-size: 4.63rem;
+    font-size: 50px;
     font-family: 'Chinese Rocks Rg', sans-serif;
     text-align: right;
     color: #ac000084;
@@ -94,11 +91,11 @@ body, html {
     position: fixed;
     left: 0vh;
     bottom: 0.5vw;
-    display: internal;
+    display: inline-block;
 }
 
 .progress {
-    margin-top: 0.46rem!important; 
+    margin-top: 5px!important; 
  }
 
 /* Animation */
@@ -138,14 +135,14 @@ body, html {
 
 .drag-handle {
     position: absolute;
-    top: -2.31rem;
+    top: -25px;
     left: 0;
     background-color: rgba(0, 0, 0, 0.8);
     color: white;
-    padding: 0.19rem 0.74rem;
-    font-size: 1.11rem;
+    padding: 2px 8px;
+    font-size: 12px;
     font-family: 'Work Sans', sans-serif;
-    border-radius: 0.37rem;
+    border-radius: 4px;
     cursor: move;
     user-select: none;
     z-index: 1000;
@@ -191,22 +188,22 @@ body, html {
 
 .status-circle .drag-handle {
     position: absolute;
-    top: -1.85rem;
+    top: -20px;
     left: 50%;
     transform: translateX(-50%);
     background-color: rgba(0, 0, 0, 0.9);
     color: white;
-    padding: 0.09rem 0.56rem;
-    font-size: 0.93rem;
+    padding: 1px 6px;
+    font-size: 10px;
     font-family: 'Work Sans', sans-serif;
-    border-radius: 0.28rem;
+    border-radius: 3px;
     cursor: move;
     user-select: none;
     z-index: 1001;
     white-space: nowrap;
     font-weight: 500;
     pointer-events: auto;
-    max-width: 11.11rem;
+    max-width: 120px;
     overflow: hidden;
     text-overflow: ellipsis;
 }
@@ -216,12 +213,7 @@ body, html {
 }
 
 /* Special handling for voice element that toggles visibility */
-.status-circle[data-element="voice"] {
-    transition: opacity 0.2s ease;
-}
-
 .status-circle[data-element="voice"].edit-mode {
-    opacity: 1 !important; /* Always visible in edit mode */
     pointer-events: all !important;
 }
 
@@ -237,34 +229,34 @@ body, html {
 /* Resize Handle for Status Circles */
 .resize-handle {
     position: absolute;
-    bottom: 0.46rem;
-    right: 0.46rem;
-    width: 1.11rem;
-    height: 1.11rem;
+    bottom: 5px;
+    right: 5px;
+    width: 12px;
+    height: 12px;
     background-color: rgba(0, 255, 0, 0.9);
-    border: 0.09rem solid rgba(255, 255, 255, 1);
+    border: 1px solid rgba(255, 255, 255, 1);
     border-radius: 50%;
     cursor: nw-resize;
     z-index: 1002;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.56rem;
+    font-size: 6px;
     color: white;
     user-select: none;
     transition: all 0.2s ease;
-    box-shadow: 0 0.09rem 0.28rem rgba(0, 0, 0, 0.5);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 .resize-handle:hover {
     background-color: rgba(0, 255, 0, 1);
     transform: scale(1.2);
-    box-shadow: 0 0.19rem 0.56rem rgba(0, 0, 0, 0.7);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
 }
 
 .resize-handle::before {
     content: '⌟';
-    font-size: 0.93rem;
+    font-size: 10px;
     font-weight: bold;
     transform: rotate(180deg);
 }
@@ -283,7 +275,7 @@ body, html {
     bottom: 2.5vw;
     display: flex;
     flex-direction: column;
-    gap: 0.46rem;
+    gap: 5px;
     align-items: flex-end;
 }
 

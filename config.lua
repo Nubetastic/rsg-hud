@@ -4,10 +4,9 @@ Config = {}
 -- needs settings
 ----------------------------------
 Config.StatusInterval = 5000 -- how often to update hunger/thirst status in milliseconds
-Config.HungerRate = 0.05 -- Rate at which hunger goes down.
-Config.ThirstRate = 0.05 -- Rate at which thirst goes down.
+Config.HungerRate = 0.01 -- Rate at which hunger goes down.
+Config.ThirstRate = 0.01 -- Rate at which thirst goes down.
 Config.CleanlinessRate = 0.01 -- Rate at which cleanliness goes down.
-Config.RestoreHealth = true
 Config.HealthRestoreRate = 5 -- Rate at which health restores when not hungry/thirsty.
 Config.HealingHungerRate = 0.1 -- Added Hunger rate while healing.
 Config.HealingThirstRate = 0.1 -- Added Thirst rate while healing.
@@ -37,7 +36,7 @@ Config.HideHorseCourageNative = true
 ----------------------------------
 -- voice icon settings
 ----------------------------------
-Config.VoiceAlwaysVisible = false  -- true = always visible, false = only when talking
+Config.VoiceAlwaysVisible = true  -- true = always visible, false = only when talking
 
 ----------------------------------
 -- minimap / compass settings
@@ -55,7 +54,7 @@ Config.DoHealthDamage = true
 ----------------------------------
 -- turn screen effect on/off
 ----------------------------------
-Config.DoHealthDamageFx = true
+Config.DoHealthDamageFx = false
 
 ----------------------------------
 -- turn health damage sound on/off
@@ -65,8 +64,8 @@ Config.DoHealthPainSound = true
 ----------------------------------
 -- temp settings (only one setting)
 ----------------------------------
+--Config.TempFormat = 'celsius'
 Config.TempFormat = 'fahrenheit'
---Config.TempFormat = 'fahrenheit'
 
 ----------------------------------
 -- temp feature (does damage to player if too hot or cold)
@@ -76,17 +75,17 @@ Config.TempFeature = true
 ----------------------------------
 -- warmth add while wearing (temp feature must be enabled)
 ----------------------------------
-Config.WearingHat      = 1
-Config.WearingShirt    = 1
-Config.WearingPants    = 2
-Config.WearingBoots    = 2
-Config.WearingCoat     = 10
-Config.WearingOpenCoat = 5
-Config.WearingGloves   = 2
-Config.WearingVest     = 1
-Config.WearingPoncho   = 3
-Config.WearingSkirt    = 1
-Config.WearingChaps    = 2
+Config.WearingHat      = 0
+Config.WearingShirt    = 0
+Config.WearingPants    = 0
+Config.WearingBoots    = 0
+Config.WearingCoat     = 15
+Config.WearingOpenCoat = 15
+Config.WearingGloves   = 0
+Config.WearingVest     = 0
+Config.WearingPoncho   = 0
+Config.WearingSkirt    = 0
+Config.WearingChaps    = 0
 
 ----------------------------------
 -- job type warmth exemptions (temp feature must be enabled)
@@ -102,6 +101,7 @@ Config.NoWarmthJobs = {
 ----------------------------------
 -- warmth limit before impacts health  (temp feature must be enabled)
 ----------------------------------
+--- celsius (-5,40) , fahrenheit (23,104)
 Config.MinTemp = 23
 Config.MaxTemp = 104
 
@@ -109,7 +109,7 @@ Config.MaxTemp = 104
 -- cleanliness limit before impacts health
 ----------------------------------
 Config.FlyEffect = true -- toggle flies on/off
-Config.MinCleanliness = 10
+Config.MinCleanliness = 30
 
 ----------------------------------
 -- amount of health to remove if min/max temp reached
@@ -208,6 +208,7 @@ Config.IconColors = {
     },
     ['stress'] = {
         normal = '#FFFFFF',      -- White (stress icon color)
+        low = '#FF0000'          -- Red when stressed (>=70%)
     },
     ['temp'] = {
         cold = '#FDD021',        -- Yellow when cold (<=30)
