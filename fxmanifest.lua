@@ -11,6 +11,7 @@ shared_scripts {
 }
 
 client_scripts {
+    'client/scale.lua',
     'client/client.lua',
 }
 

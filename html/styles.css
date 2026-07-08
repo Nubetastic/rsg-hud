@@ -31,6 +31,9 @@ body, html {
     top: 5vh;
     font-weight: 400;
     font-size: 30px;
+    transform: scale(var(--hud-scale, 1));
+    transform-origin: top right;
+    will-change: transform;
   }
   
   #sign {
@@ -277,5 +280,7 @@ body, html {
     flex-direction: column;
     gap: 5px;
     align-items: flex-end;
+    transform: scale(var(--hud-scale, 1));
+    transform-origin: bottom left;
+    will-change: transform;
 }
-

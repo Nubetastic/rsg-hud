@@ -11,6 +11,12 @@ local isWeapon = false
 local outlawstatus = 0
 lib.locale()
 
+local function applyHudScale(baseScale)
+    if type(SetScale) == 'function' then
+        SetScale(baseScale or 1.0)
+    end
+end
+
 ------------------------------------------------
 -- send locales to NUI
 ------------------------------------------------
@@ -45,6 +51,7 @@ end
 CreateThread(function()
     Wait(1000)
     sendLocalesToNUI()
+    applyHudScale(1.0)
 end)
 
 ------------------------------------------------
@@ -692,6 +699,7 @@ local function setupLoginWatcher()
             local isLoggedIn = LocalPlayer.state.isLoggedIn
             if isLoggedIn and not wasLoggedIn then
                 showUI = true
+                applyHudScale(1.0)
                 wasLoggedIn = true
             elseif not isLoggedIn and wasLoggedIn then
                 showUI = false
@@ -772,4 +780,3 @@ RegisterNUICallback('disableEditMode', function(data, cb)
     end
     cb('ok')
 end)
-

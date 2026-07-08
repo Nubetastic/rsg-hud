@@ -25,6 +25,7 @@ Config.StressDecayRate = 0.01 -- Rate at which stress goes down.
 Config.HidePlayerHealthNative  = true
 Config.HidePlayerStaminaNative = true
 Config.HidePlayerDeadEyeNative = true
+Config.HudScaleOffset = 0
 
 ----------------------------------
 -- hud horse display settings

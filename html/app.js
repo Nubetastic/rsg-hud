@@ -1,5 +1,10 @@
 // MONEY HUD
 
+function applyHudScale(scale) {
+    const resolvedScale = Math.max(0.1, Number(scale) || 1);
+    document.documentElement.style.setProperty('--hud-scale', resolvedScale);
+}
+
 const moneyHud = Vue.createApp({
     data() {
         return {
@@ -37,6 +42,9 @@ const moneyHud = Vue.createApp({
                     break;
                 case 'setLocales':
                     this.locales = event.data.locales
+                    break;
+                case 'setScale':
+                    applyHudScale(event.data.scale)
                     break;
             }
         });
@@ -186,6 +194,8 @@ const playerHud = {
                 this.toggleEditMode(event.data.enabled);
             } else if (event.data.action === 'setLocales') {
                 this.locales = event.data.locales;
+            } else if (event.data.action === 'setScale') {
+                applyHudScale(event.data.scale);
             }
         });
     },
