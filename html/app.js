@@ -4,12 +4,14 @@ const moneyHud = Vue.createApp({
     data() {
         return {
             cash: 0,
+            gold: 0,
             bloodmoney: 0,
             bank: 0,
             amount: 0,
             plus: false,
             minus: false,
             showCash: false,
+            showGold: false,
             showBloodmoney: false,
             showBank: false,
             showUpdate: false,
@@ -55,9 +57,11 @@ const moneyHud = Vue.createApp({
         },
         showConstant(data) {
             this.showCash = true;
+            this.showGold = true;
             this.showBloodmoney = true;
             this.showBank = true;
             this.cash = data.cash;
+            this.gold = data.gold;
             this.bloodmoney = data.bloodmoney;
             this.bank = data.bank;
         },
@@ -67,6 +71,7 @@ const moneyHud = Vue.createApp({
             this.bank = data.bank;
             this.bloodmoney = data.bloodmoney;
             this.cash = data.cash;
+            this.gold = data.gold;
             this.minus = data.minus;
             this.plus = data.plus;
             if (data.type === 'cash') {
@@ -80,6 +85,19 @@ const moneyHud = Vue.createApp({
                     this.plus = true;
                     setTimeout(() => this.showUpdate = false, 1000)
                     setTimeout(() => this.showCash = false, 2000)
+                }
+            }
+            if (data.type === 'gold') {
+                if (data.minus) {
+                    this.showGold = true;
+                    this.minus = true;
+                    setTimeout(() => this.showUpdate = false, 1000)
+                    setTimeout(() => this.showGold = false, 2000)
+                } else {
+                    this.showGold = true;
+                    this.plus = true;
+                    setTimeout(() => this.showUpdate = false, 1000)
+                    setTimeout(() => this.showGold = false, 2000)
                 }
             }
             if (data.type === 'bloodmoney') {
@@ -114,6 +132,11 @@ const moneyHud = Vue.createApp({
                 this.showCash = true;
                 this.cash = data.cash;
                 setTimeout(() => this.showCash = false, 3500);
+            }
+            else if (data.type === 'gold' && !this.showGold) {
+                this.showGold = true;
+                this.gold = data.gold;
+                setTimeout(() => this.showGold = false, 3500);
             }
             else if (data.type === 'bloodmoney' && !this.showBloodmoney) {
                 this.showBloodmoney = true;

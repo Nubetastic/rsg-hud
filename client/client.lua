@@ -1,6 +1,7 @@
 local RSGCore = exports['rsg-core']:GetCoreObject()
 local speed = 0.0
 local cashAmount = 0
+local goldAmount = 0
 local bloodmoneyAmount = 0
 local bankAmount = 0
 local showUI = false
@@ -552,6 +553,12 @@ RegisterNetEvent('hud:client:ShowAccounts', function(type, amount)
             type = 'cash',
             cash = string.format("%.2f", amount)
         })
+    elseif type == 'gold' then
+        SendNUIMessage({
+            action = 'show',
+            type = 'gold',
+            gold = string.format("%.0f", amount)
+        })
     elseif type == 'bloodmoney' then
         SendNUIMessage({
             action = 'show',
@@ -573,12 +580,14 @@ end)
 RegisterNetEvent('hud:client:OnMoneyChange', function(type, amount, isMinus)
     RSGCore.Functions.GetPlayerData(function(PlayerData)
         cashAmount = PlayerData.money.cash
+        goldAmount = PlayerData.money.gold or 0
         bloodmoneyAmount = PlayerData.money.bloodmoney
         bankAmount = PlayerData.money.bank
     end)
     SendNUIMessage({
         action = 'update',
         cash = lib.math.round(cashAmount, 2),
+        gold = lib.math.round(goldAmount),
         bloodmoney = lib.math.round(bloodmoneyAmount, 2),
         bank = lib.math.round(bankAmount, 2),
         amount = lib.math.round(amount, 2),

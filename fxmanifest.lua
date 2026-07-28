@@ -32,6 +32,7 @@ files {
     'html/index.html',
     'html/styles.css',
     'html/app.js',
+    'html/assets/gold.png',
     'locales/*.json'
 }
 
