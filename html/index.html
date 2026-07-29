@@ -18,6 +18,11 @@
             <p v-if="showCash"><span id="sign">$&nbsp;</span><span id="money">{{(cash)}}</span></p>
                 </transition>
             </div>
+            <div id="money-gold">
+                <transition name="slide-fade">
+            <p v-if="showGold"><img class="gold-icon" src="assets/gold.png" alt="Gold"><span id="gold">{{(gold)}}</span></p>
+                </transition>
+            </div>
             <div id="money-bloodmoney">
                 <transition name="slide-fade">
             <p v-if="showBloodmoney"><span id="sign">$&nbsp;</span><span id="bloodmoney">{{(bloodmoney)}}</span></p>

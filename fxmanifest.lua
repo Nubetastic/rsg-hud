@@ -3,7 +3,7 @@ game 'rdr3'
 rdr3_warning 'I acknowledge that this is a prerelease build of RedM, and I am aware my resources *will* become incompatible once RedM ships.'
 
 description 'rsg-hud'
-version '2.1.9'
+version '2.1.10'
 
 shared_scripts {
     '@ox_lib/init.lua',
@@ -33,6 +33,7 @@ files {
     'html/index.html',
     'html/styles.css',
     'html/app.js',
+    'html/assets/gold.png',
     'locales/*.json'
 }
 
