@@ -128,3 +128,7 @@ Config.IconColors = {
 
 - **Community contributors & translators**  
 - License: **GPL‑3.0**
+
+
+Modified from https://github.com/Rexshack-RedM/rsg-hud, Nov 2025.
+See the Git history for changes. Distributed under GNU GPLv3.
