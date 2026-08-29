@@ -10,6 +10,10 @@
 </head>
 
 <body>
+    <div id="hud-scale-control">
+        <label for="hud-scale-slider">HUD Scale: <span id="hud-scale-value">1.0x</span></label>
+        <input id="hud-scale-slider" type="range" min="0.5" max="4" step="0.1" value="1">
+    </div>
     <div id="main-container">
         <div id="money-container" class="draggable-element" data-element="money">
             <div class="drag-handle" v-show="editMode">{{ locales.money_hud_label }}</div>

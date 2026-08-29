@@ -23,6 +23,34 @@ body, html {
     box-sizing: border-box;
 }
 
+#hud-scale-control {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 320px;
+    padding: 14px 18px;
+    flex-direction: column;
+    gap: 8px;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 6px;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 14px;
+    text-align: center;
+    z-index: 10000;
+}
+
+#hud-scale-control.edit-mode {
+    display: flex;
+}
+
+#hud-scale-slider {
+    width: 100%;
+    cursor: pointer;
+}
+
 /* Money */
 
 #money-container {
@@ -184,6 +212,8 @@ body, html {
 .status-circle {
     display: inline-block;
     position: relative;
+    transform: scale(var(--hud-scale, 1));
+    transform-origin: center center;
     transition: transform 0.1s ease;
 }
 
@@ -295,7 +325,8 @@ body, html {
     flex-direction: column;
     gap: 5px;
     align-items: flex-end;
-    transform: scale(var(--hud-scale, 1));
-    transform-origin: bottom left;
-    will-change: transform;
+}
+
+.icon-resize-disabled .resize-handle {
+    display: none !important;
 }

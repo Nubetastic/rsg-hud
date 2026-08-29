@@ -729,7 +729,8 @@ RegisterNetEvent('hud:client:ToggleEditMode', function()
     editMode = not editMode
     SendNUIMessage({
         action = 'toggleEditMode',
-        enabled = editMode
+        enabled = editMode,
+        iconResizeEnabled = Config.EnableIconResize
     })
     if editMode then
         -- Enable mouse cursor for dragging
@@ -778,7 +779,8 @@ RegisterNUICallback('disableEditMode', function(data, cb)
         SetNuiFocus(false, false)
         SendNUIMessage({
             action = 'toggleEditMode',
-            enabled = false
+            enabled = false,
+            iconResizeEnabled = Config.EnableIconResize
         })
         lib.notify({
             title = locale('edit_mode_on_title'),

@@ -1,9 +1,20 @@
 // MONEY HUD
 
+let hudBaseScale = 1;
+let hudScale = Math.min(4, Math.max(0.5, Number(localStorage.getItem('hudScale')) || 1));
+
 function applyHudScale(scale) {
-    const resolvedScale = Math.max(0.1, Number(scale) || 1);
+    hudBaseScale = Math.max(0.1, Number(scale) || 1);
+    const resolvedScale = hudBaseScale * hudScale;
     document.documentElement.style.setProperty('--hud-scale', resolvedScale);
+
+    document.querySelectorAll('.status-circle').forEach(element => {
+        const elementScale = Number(element.dataset.elementScale) || 1;
+        element.style.transform = `scale(${resolvedScale * elementScale})`;
+    });
 }
+
+applyHudScale(1);
 
 const moneyHud = Vue.createApp({
     data() {
@@ -483,6 +494,7 @@ class HUDDragSystem {
         this.currentElement = null;
         this.dragOffset = { x: 0, y: 0 };
         this.editMode = false;
+        this.iconResizeEnabled = true;
         this.positions = this.loadPositions();
         this.sizes = this.loadSizes();
         
@@ -492,7 +504,18 @@ class HUDDragSystem {
     init() {
         // Load saved positions
         this.applyPositions();
-        
+        this.scaleSlider = document.getElementById('hud-scale-slider');
+        this.scaleValue = document.getElementById('hud-scale-value');
+        this.scaleControl = document.getElementById('hud-scale-control');
+        this.scaleSlider.value = hudScale.toFixed(1);
+        this.scaleValue.textContent = hudScale.toFixed(1) + 'x';
+        this.scaleSlider.addEventListener('input', (event) => {
+            hudScale = Number(event.target.value);
+            this.scaleValue.textContent = hudScale.toFixed(1) + 'x';
+            localStorage.setItem('hudScale', hudScale.toFixed(1));
+            applyHudScale(hudBaseScale);
+        });
+
         // Set up event listeners
         document.addEventListener('mousedown', this.handleMouseDown.bind(this));
         document.addEventListener('mousemove', this.handleMouseMove.bind(this));
@@ -507,6 +530,8 @@ class HUDDragSystem {
         // Listen for edit mode changes and reset commands
         window.addEventListener('message', (event) => {
             if (event.data.action === 'toggleEditMode') {
+                this.iconResizeEnabled = event.data.iconResizeEnabled !== false;
+                document.body.classList.toggle('icon-resize-disabled', !this.iconResizeEnabled);
                 this.toggleEditMode(event.data.enabled);
             } else if (event.data.action === 'resetPositions') {
                 this.resetToDefaults();
@@ -581,6 +606,7 @@ class HUDDragSystem {
     
     toggleEditMode(enabled) {
         this.editMode = enabled;
+        this.scaleControl.classList.toggle('edit-mode', enabled);
         const draggableElements = document.querySelectorAll('.draggable-element');
         
         draggableElements.forEach(element => {
@@ -609,7 +635,7 @@ class HUDDragSystem {
         if (!this.editMode) return;
         
         // Check if clicked on a resize handle
-        if (e.target.classList.contains('resize-handle')) {
+        if (this.iconResizeEnabled && e.target.classList.contains('resize-handle')) {
             e.preventDefault();
             this.startResizing(e.target.parentElement, e);
         }
@@ -746,8 +772,9 @@ class HUDDragSystem {
         const baseSize = 60;
         const scaleFactor = size / baseSize;
         
-        // Use CSS transform to scale the entire element
-        element.style.transform = `scale(${scaleFactor})`;
+        // Keep individual resizing compatible with the overall HUD scale
+        element.dataset.elementScale = scaleFactor;
+        element.style.transform = `scale(${hudBaseScale * hudScale * scaleFactor})`;
         element.style.transformOrigin = 'center center';
         
         // Update the container size for collision detection
@@ -846,6 +873,7 @@ class HUDDragSystem {
             circle.style.height = '';
             circle.style.transform = ''; // Clear transform scaling
             circle.style.transformOrigin = '';            
+            delete circle.dataset.elementScale;
             // Remove any drag/resize classes
             circle.classList.remove('edit-mode', 'dragging', 'resizing');
         });
@@ -855,6 +883,11 @@ class HUDDragSystem {
         this.sizes = {};
         this.savePositions();
         this.saveSizes();
+        hudScale = 1;
+        this.scaleSlider.value = '1.0';
+        this.scaleValue.textContent = '1.0x';
+        localStorage.setItem('hudScale', '1.0');
+        applyHudScale(hudBaseScale);
     }
 }
 

@@ -26,6 +26,7 @@ Config.HidePlayerHealthNative  = true
 Config.HidePlayerStaminaNative = true
 Config.HidePlayerDeadEyeNative = true
 Config.HudScaleOffset = 0
+Config.EnableIconResize = false -- set to false to disable the green per-icon resize handles
 
 ----------------------------------
 -- hud horse display settings
