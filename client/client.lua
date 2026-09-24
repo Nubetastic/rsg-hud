@@ -477,6 +477,19 @@ CreateThread(function()
                 FliesSpawn(state.cleanliness)
             end
 
+            local isHealthDamageFxActive = Citizen.InvokeNative(0x4A123E85D7C4CA0B, "MP_Downed")
+
+            if Config.DoHealthDamageFx then
+                local shouldShowHealthDamageFx = Config.DoHealthDamage and ((Config.TempFeature and (temp < Config.MinTemp or temp > Config.MaxTemp)) or state.cleanliness <= 0)
+                if shouldShowHealthDamageFx and not isHealthDamageFxActive then
+                    Citizen.InvokeNative(0x4102732DF6B4005F, "MP_Downed", 2000, false)
+                elseif not shouldShowHealthDamageFx and isHealthDamageFxActive then
+                    Citizen.InvokeNative(0xB4FD7446BAB2F394, "MP_Downed")
+                end
+            elseif isHealthDamageFxActive then
+                Citizen.InvokeNative(0xB4FD7446BAB2F394, "MP_Downed")
+            end
+
             if Config.DoHealthDamage then
                 local health = GetEntityHealth(cache.ped)
                 local maxHealth = GetEntityMaxHealth(cache.ped)
@@ -499,42 +512,27 @@ CreateThread(function()
                 if Config.TempFeature then
                     -- cold health damage
                     if temp < Config.MinTemp then 
-                        if Config.DoHealthDamageFx then
-                            Citizen.InvokeNative(0x4102732DF6B4005F, "MP_Downed", 0, true)
-                        end
                         if Config.DoHealthPainSound then
                             PlayPain(cache.ped, 9, 1, true, true)
                         end
                         SetEntityHealth(cache.ped, math.max(0, health -  Config.RemoveHealth))
-                    elseif Citizen.InvokeNative(0x4A123E85D7C4CA0B, "MP_Downed") and Config.DoHealthDamageFx then
-                        Citizen.InvokeNative(0xB4FD7446BAB2F394, "MP_Downed")
                     end
 
                     -- hot health damage
                     if temp > Config.MaxTemp then
-                        if Config.DoHealthDamageFx then
-                            Citizen.InvokeNative(0x4102732DF6B4005F, "MP_Downed", 0, true)
-                        end
                         if Config.DoHealthPainSound then
                             PlayPain(cache.ped, 9, 1, true, true)
                         end
                         SetEntityHealth(cache.ped, math.max(0, health -  Config.RemoveHealth))
-                    elseif Citizen.InvokeNative(0x4A123E85D7C4CA0B, "MP_Downed") and Config.DoHealthDamageFx then
-                        Citizen.InvokeNative(0xB4FD7446BAB2F394, "MP_Downed")
                     end
                 end
 
                 -- cleanliness health damage
                 if state.cleanliness <= 0 then
-                    if Config.DoHealthDamageFx then
-                        Citizen.InvokeNative(0x4102732DF6B4005F, "MP_Downed", 0, true)
-                    end
                     if Config.DoHealthPainSound then
                         PlayPain(cache.ped, 12, 1, true, true)
                     end
                     SetEntityHealth(cache.ped, math.max(0, health -  Config.RemoveHealth))
-                elseif Citizen.InvokeNative(0x4A123E85D7C4CA0B, "MP_Downed") and Config.DoHealthDamageFx then
-                    Citizen.InvokeNative(0xB4FD7446BAB2F394, "MP_Downed")
                 end
             end
 
@@ -707,10 +705,12 @@ local function setupLoginWatcher()
             Wait(100)
             local isLoggedIn = LocalPlayer.state.isLoggedIn
             if isLoggedIn and not wasLoggedIn then
+                Citizen.InvokeNative(0x66560A0D4C64FD21) -- AnimpostfxStopAll
                 showUI = true
                 applyHudScale(1.0)
                 wasLoggedIn = true
             elseif not isLoggedIn and wasLoggedIn then
+                Citizen.InvokeNative(0xB4FD7446BAB2F394, "MP_Downed")
                 showUI = false
                 wasLoggedIn = false
             end
@@ -790,4 +790,10 @@ RegisterNUICallback('disableEditMode', function(data, cb)
         })
     end
     cb('ok')
+end)
+
+AddEventHandler('onResourceStop', function(resourceName)
+    if resourceName ~= GetCurrentResourceName() then return end
+
+    Citizen.InvokeNative(0xB4FD7446BAB2F394, "MP_Downed")
 end)
