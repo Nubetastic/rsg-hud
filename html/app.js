@@ -210,6 +210,7 @@ const playerHud = {
             showYouHaveMail: true,
             talkingColor: "#FFFFFF",
             showTemp: true,
+            showTempColor: "#FFFFFF",
             showStressColor: "#FFFFFF",
             editMode: false,
             iconColors: {}, // Store config colors
@@ -395,10 +396,12 @@ const playerHud = {
             } else {
                 this.showTemp = true;
             }
-            if (data.temp <= 30) {
-                this.showTempColor = this.iconColors.temp?.cold || "#FDD021";
+            if (data.tempValue < data.minTemp) {
+                this.showTempColor = this.iconColors.temp?.cold || "#2196F3";
+            } else if (data.tempValue > data.maxTemp) {
+                this.showTempColor = this.iconColors.temp?.hot || "#F44336";
             } else {
-                this.showTempColor = this.iconColors.temp?.normal || "#CFBCAE";
+                this.showTempColor = this.iconColors.temp?.normal || "#FFFFFF";
             }
             if (data.youhavemail) {
                 this.showYouHaveMailColor = this.iconColors.mail?.hasmail || "#FFD700";

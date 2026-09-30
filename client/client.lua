@@ -7,7 +7,7 @@ local bankAmount = 0
 local showUI = false
 local temperature = 0
 local temp = 0
-local tempadd = 0
+local warmth = 0
 local isWeapon = false
 local outlawstatus = 0
 lib.locale()
@@ -321,6 +321,9 @@ CreateThread(function()
                 stress = LocalPlayer.state.stress or 0,
                 talking = talking,
                 temp = temperature,
+                tempValue = temp,
+                minTemp = Config.MinTemp,
+                maxTemp = Config.MaxTemp,
                 onHorse = mounted,
                 horsehealth = horsehealth,
                 horsestamina = horsestamina,
@@ -384,38 +387,16 @@ end)
 ------------------------------------------------
 -- work out temperature
 ------------------------------------------------
+exports('UpdateWarmth', function(value)
+    warmth = value
+end)
+
 CreateThread(function()
     while true do
         Wait(1000)
         if Config.TempFeature then
             local coords = GetEntityCoords(cache.ped)
-            -- wearing
-            local hat      = Citizen.InvokeNative(0xFB4891BD7578CDC1, cache.ped, 0x9925C067) -- hat
-            local shirt    = Citizen.InvokeNative(0xFB4891BD7578CDC1, cache.ped, 0x2026C46D) -- shirt
-            local pants    = Citizen.InvokeNative(0xFB4891BD7578CDC1, cache.ped, 0x1D4C528A) -- pants
-            local boots    = Citizen.InvokeNative(0xFB4891BD7578CDC1, cache.ped, 0x777EC6EF) -- boots
-            local coat     = Citizen.InvokeNative(0xFB4891BD7578CDC1, cache.ped, 0xE06D30CE) -- coat
-            local opencoat = Citizen.InvokeNative(0xFB4891BD7578CDC1, cache.ped, 0x662AC34) -- open-coat
-            local gloves   = Citizen.InvokeNative(0xFB4891BD7578CDC1, cache.ped, 0xEABE0032) -- gloves
-            local vest     = Citizen.InvokeNative(0xFB4891BD7578CDC1, cache.ped, 0x485EE834) -- vest
-            local poncho   = Citizen.InvokeNative(0xFB4891BD7578CDC1, cache.ped, 0xAF14310B) -- poncho
-            local skirts   = Citizen.InvokeNative(0xFB4891BD7578CDC1, cache.ped, 0xA0E3AB7F) -- skirts
-            local chaps    = Citizen.InvokeNative(0xFB4891BD7578CDC1, cache.ped, 0x3107499B) -- chaps
-
-             -- get temp add
-             local what      = hat      == 1 and Config.WearingHat      or 0
-             local wshirt    = shirt    == 1 and Config.WearingShirt    or 0
-             local wpants    = pants    == 1 and Config.WearingPants    or 0
-             local wboots    = boots    == 1 and Config.WearingBoots    or 0
-             local wcoat     = coat     == 1 and Config.WearingCoat     or 0
-             local wopencoat = opencoat == 1 and Config.WearingOpenCoat or 0
-             local wgloves   = gloves   == 1 and Config.WearingGloves   or 0
-             local wvest     = vest     == 1 and Config.WearingVest     or 0
-             local wponcho   = poncho   == 1 and Config.WearingPoncho   or 0
-             local wskirts   = skirts   == 1 and Config.WearingSkirt    or 0
-             local wchaps    = chaps    == 1 and Config.WearingChaps    or 0
-
-             tempadd = (what + wshirt + wpants + wboots + wcoat + wopencoat + wgloves + wvest + wponcho + wskirts + wchaps)
+            local tempadd = warmth
 
             -- check if job type is exempt from clothing warmth
             if Config.EnableNoWarmthJobs and Config.NoWarmthJobs then

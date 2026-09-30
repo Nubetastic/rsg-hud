@@ -67,7 +67,7 @@
         <div v-show="showTemp" class="draggable-element status-circle" data-element="temp">
             <div class="drag-handle" v-show="editMode">{{ locales.temp_label }}</div>
             <div class="resize-handle" v-show="editMode"></div>
-            <q-circular-progress class="progress" show-value :value="temp" size="3.20vh" :thickness="0.22" color="white" track-color="grey-8" center-color="gray-10">
+            <q-circular-progress class="progress temp-progress" show-value :value="temp" size="3.20vh" :thickness="0.22" color="white" :style="{'--temp-ring-color': showTempColor}" track-color="grey-8" center-color="gray-10">
               <template v-slot:default>
                 <div class="text-white" style="font-family: 'Work Sans', sans-serif">{{ temp }}</div>
               </template>

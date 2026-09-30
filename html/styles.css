@@ -144,6 +144,10 @@ body, html {
     margin-top: 5px!important; 
  }
 
+.temp-progress .q-circular-progress__circle {
+    stroke: var(--temp-ring-color) !important;
+}
+
 /* Animation */
 
 .slide-fade-enter-active {

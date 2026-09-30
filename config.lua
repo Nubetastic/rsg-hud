@@ -104,7 +104,7 @@ Config.NoWarmthJobs = {
 -- warmth limit before impacts health  (temp feature must be enabled)
 ----------------------------------
 --- celsius (-5,40) , fahrenheit (23,104)
-Config.MinTemp = 23
+Config.MinTemp = 30
 Config.MaxTemp = 104
 
 ----------------------------------
@@ -213,8 +213,9 @@ Config.IconColors = {
         low = '#FF0000'          -- Red when stressed (>=70%)
     },
     ['temp'] = {
-        cold = '#FDD021',        -- Yellow when cold (<=30)
-        normal = '#CFBCAE'       -- Light brown when normal
+        cold = '#2196F3',        -- Blue when too cold
+        hot = '#F44336',         -- Red when too hot
+        normal = '#FFFFFF'       -- White when between MinTemp and MaxTemp
     },
     ['mail'] = {
         normal = '#FFFFFF',      -- White when no mail
